@@ -2,7 +2,37 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
-const Video = require("../models/video");
+const Video = require("../models/video").VideoModel;
+const ListVideo = require("../models/video").ListVideoModel;
+
+// router.get("/download", (req, res, next) => {
+//   // const video = new Video({
+//   //   _id: new mongoose.Types.ObjectId(),
+//   //   title: req.body.title,
+//   //   link: req.body.link
+//   // });
+
+//   const fs = require('fs')
+//   const youtubedl = require('youtube-dl')
+//   //const video = youtubedl(link)
+//   const video = youtubedl('http://www.youtube.com/watch?v=90AiXO1pAiA',
+//     // Optional arguments passed to youtube-dl.
+//     ['--format=18'],
+//     // Additional options can be given for calling `child_process.execFile()`.
+//     { cwd: __dirname })
+//     console.log(__dirname)
+//   // Will be called when the download starts.
+//   video.on('info', function(info) {
+//     console.log('Download started')
+//     console.log('filename: ' + info._filename)
+//     console.log('size: ' + info.size)
+//   })
+ 
+//   video.pipe(fs.createWriteStream(__dirname+'/../../historiqueVideo/myvideo.mp4'))
+// });
+
+
+
 
 router.get("/", (req, res, next) => {
   Video.find()
@@ -26,11 +56,15 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
+  console.log("Je suis bien dans le post hihi");
   const video = new Video({
     _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    price: req.body.price
+    title: req.body.title,
+    link: req.body.link,
+    date: req.body.date
   });
+  console.log(req.body.title);
+  console.log(req.body.link);
   video
     .save()
     .then(result => {
@@ -46,6 +80,7 @@ router.post("/", (req, res, next) => {
         error: err
       });
     });
+  console.log("pas post");
 });
 
 router.get("/:videoId", (req, res, next) => {
@@ -102,5 +137,7 @@ router.delete("/:videoId", (req, res, next) => {
       });
     });
 });
+
+
 
 module.exports = router;
