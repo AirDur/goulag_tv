@@ -1,0 +1,9 @@
+{
+    "admin_username" : "user",
+    "admin_password" : "user",
+    "database_ip" : "localhost",
+    "database_port" : "27017",
+    "collection" : "utilisateurs",
+    "database_connexion_error" : "Erreur lors de la connexion",
+    "database_connexion_ok" : "Connexion à la base OK"
+}
