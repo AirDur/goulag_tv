@@ -3,6 +3,8 @@
 const ModeleUtilisateur = require('../models/utilisateur.js');
 const Action = require('./action');
 const argon2 = require('argon2');
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 class Utilisateurs extends Action {
     constructor() {
@@ -10,6 +12,8 @@ class Utilisateurs extends Action {
         this.model = new ModeleUtilisateur();
 
         this.unknowObjectError = "Utilisateur inconnu";
+        this.privateKey = fs.readFileSync("./keys/jwt_priv.pem");
+        this.publicKey = fs.readFileSync("./keys/jwt_pub.pem");
     }
 
     cleanResult(result) {
@@ -18,45 +22,77 @@ class Utilisateurs extends Action {
         return result;    
     }
 
-    // async authenticate(req, res) {
-    //     let user, reason, passwordIsValid, token;
+    async login(req, res) {
+        let user, reason, passwordIsValid, token;
 
-    //     try {
-    //         user = await this.model.readOne({ email: req.body.email });
-    //         if (!!user) {
-    //             try {
-    //                 passwordIsValid = await this.auth.comparePasswords(req.body.password, user.password);
-    //             } catch(err) {
-    //                 throw err;
-    //             }
-    //             if (passwordIsValid) {
-    //                 token = this.auth.create24hToken(user._id, user.roles)
-    //             }
-    //         }
-    //     } catch (err) {
-    //         reason = err;
-    //     }
+        try {
+            user = await this.model.readOne({ email: req.body.email });
+            if (!!user) {
+                try {
+                    passwordIsValid = await this.comparePasswords(req.body.password, user.password);
+                } catch(err) {
+                    throw err;
+                }
+                if (passwordIsValid) {
+                    token = this.create24hToken(user._id, user.roles)
+                }
+            }
+        } catch (err) {
+            reason = err;
+        }
 
-    //     this.authenticateResponse(res, reason, token, passwordIsValid);
-    // }
+        this.loginResponse(res, reason, token, passwordIsValid);
+    }
 
-    // authenticateResponse(res, reason, token, passwordIsValid) {
-    //     let code = null,
-    //         result = null;
+    async comparePasswords(password, stockedPassword) {
+        try {
+            if (await argon2.verify(stockedPassword, password)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
 
-    //     if (reason) {
-    //         code = RESPONSES.HTTP_STATUS.INTERNAL_SERVER_ERROR;
-    //         result = RESPONSES.UNKNOW_ERROR;
-    //     } else if (!passwordIsValid) {
-    //         code = RESPONSES.HTTP_STATUS.UNAUTHORIZED;
-    //         result = RESPONSES.INVALID_CREDENTIAL;
-    //     } else if(!!token) {
-    //         code = RESPONSES.HTTP_STATUS.OK;
-    //         result = { token: token };
-    //     }
+    create24hToken(id, roleArray) {
+        var returnValue = null;
+        var content = {
+            _id: id,
+            roles: roleArray
+        };
 
-    //     this.sendAnswer(res, code, result);
-    // }
+        try {
+            returnValue = jwt.sign(content, this.privateKey, {
+                algorithm: 'ES256',
+                expiresIn: 86400
+            });
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
+
+        return returnValue;
+    };
+
+    loginResponse(res, reason, token, passwordIsValid) {
+        let code = null,
+            result = null;
+
+        if (reason) {
+            code = 500;
+            result = "Erreur serveur";
+        } else if (!passwordIsValid) {
+            code = 401;
+            result = "Problèmes";
+        } else if(!!token) {
+            code = 200;
+            result = { token: token };
+        }
+
+        this.sendAnswer(res, code, result);
+    }
 
     async encapsulateUserInformation(newUser) {
         let countNumberUser = await this.model.count({});
@@ -120,6 +156,7 @@ class Utilisateurs extends Action {
             this.sendAnswer(res, code, result);
         }
     }
+    
 };
 
 module.exports = Utilisateurs;

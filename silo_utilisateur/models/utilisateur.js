@@ -78,6 +78,21 @@ class Utilisateur {
         });
     });
   };
+
+  async readOne(query) {
+    var self = this;
+    return new Promise(function(resolve, reject) { 
+      self.DBModel.findOne(query,function(err, data){
+        if(err) {
+            reject({"error" : true,"message" : "Error fetching data", "errorMsg" : err});  
+        } else {
+            data = !!data && !!data._doc ? data._doc : data;
+            resolve(data);
+        }
+      });
+    });
+  };
+  
 };
 
 module.exports = Utilisateur;
