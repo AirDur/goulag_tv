@@ -1,0 +1,157 @@
+
+/* latin */
+@font-face {
+  font-family: 'Cookie';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Cookie-Regular'), url(https://fonts.gstatic.com/s/cookie/v9/syky-y18lb0tSbf9kgqS.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+#search-box {
+    position: relative;
+    width: 70%;
+    margin: 30px 0 0 15%;
+    height: 40px;
+    border: 1px solid #999;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+#search-box input[type="text"] {
+    width: 90%;
+    padding: 11px 0 12px 1em;
+    color: #333;
+    outline: none;
+}
+#search-text {
+    font-size: 14px;
+    color: #ddd;
+    border-width: 0;
+    background: transparent;
+}
+button, input {
+}
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+button, hr, input {
+    overflow: visible;
+}
+
+#search-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 42px;
+    width: 80px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    line-height: 42px;
+    border-width: 0;
+    background-color: #4d90fe;
+    -webkit-border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    border-radius: 0px 5px 5px 0px;
+    cursor: pointer;
+}
+
+[type="submit"], [type="reset"], button, html [type="button"] {
+    -webkit-appearance: button;
+}
+
+button, select {
+    text-transform: none;
+}
+button, input {
+}
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+button, hr, input {
+    overflow: visible;
+}
+
+#options_search{
+	margin-left:15%;
+	margin-top:10px;
+}
+
+#videos_liste_home, #banners_search{
+	margin-left:15%;
+    width:70%;
+}
+
+.videos_frames{
+	margin:25px 4% 0 0;
+}
+
+#liste_vimeo{
+    padding-left:6%;
+    width:50%;
+    float:left;
+    border-right:1px solid grey;
+}
+
+#liste_youtube{
+    padding-left:6%;
+    width:50%;
+    float:right;
+}
+
+#vimeo_banner{
+    width:50%;
+    height:100px;
+    background:#49b4e9;
+}
+
+#youtube_banner{
+    width:50%;
+    height:100px;
+    background:#425263;
+    float:right;
+}
+
+.iframes_englober{
+    width:100%;
+}
+
+#playlists_main{
+    position:fixed;
+    padding:6px;
+    border:1px solid grey;
+    background:white;
+    color:black;
+    left:50%;
+    margin-left:-150px;
+    top:50px;
+    width:300px;
+    min-height:100px;
+}
+
+.liste_playlist_main{
+    border-bottom:1px solid grey;
+    padding:4px;
+    cursor:pointer;
+}
+
+.liste_playlist_main:hover{
+    background:#425263;
+}
+
+.add_playlist{
+    cursor:pointer;
+    width:80%;
+    background-image: linear-gradient(red, yellow);
+}
+
