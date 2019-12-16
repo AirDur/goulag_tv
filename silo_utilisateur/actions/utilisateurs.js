@@ -14,10 +14,17 @@ class Utilisateurs extends Action {
         this.unknowObjectError = "Utilisateur inconnu";
         this.privateKey = fs.readFileSync("./keys/jwt_priv.pem");
         this.publicKey = fs.readFileSync("./keys/jwt_pub.pem");
+
+        this.headerTokenName = "token";
     }
 
-    cleanResult(result) {
-        delete result.password;
+    hasToken(req) {
+        return !!req.headers[this.headerTokenName];
+    };
+    
+    cleanResult(res) {
+        var result = res.toObject();
+        delete result['password'];
 
         return result;    
     }
@@ -60,7 +67,7 @@ class Utilisateurs extends Action {
         var returnValue = null;
         var content = {
             _id: id,
-            roles: roleArray
+            access: true
         };
 
         try {
@@ -69,12 +76,86 @@ class Utilisateurs extends Action {
                 expiresIn: 86400
             });
         } catch (err) {
-            console.log(err);
             throw err;
         }
 
         return returnValue;
     };
+
+    async verifyToken(token) {
+        let hasAccess = false;
+        
+        try {
+            token = await jwt.verify(token, this.publicKey, { 
+                algorithms: ['ES256']
+            });
+        } catch(err) {
+            return hasAccess;
+        }
+
+        if(token.access) {
+            hasAccess = token.access;
+        }
+        
+        return hasAccess;
+    }
+
+    async getIdInToken(token) {
+        let id = false;
+        
+        try {
+            token = await jwt.verify(token, this.publicKey, { 
+                algorithms: ['ES256']
+            });
+        } catch(err) {
+            return id;
+        }
+
+        if(!!token._id) {
+            id = token._id;
+        }
+        
+        return id;
+    }
+
+    async tokenRequired(req, res, next) {
+        let isValid = false,
+            token = null;
+
+        if (this.hasToken(req)) {
+            token = req.headers[this.headerTokenName];
+            isValid = await this.verifyToken(token);
+        }
+
+        if (!this.hasToken(req)) {
+            res.status(409).send("token pas fourni")
+        } else if (!isValid) {
+            res.status(409).send("beurk le token")
+        } else {
+            next();
+        }
+    };
+
+    async tokenRequiredAndVerifyID(req, res, next) {
+        let idInToken = false,
+            token = null;
+
+        if (this.hasToken(req)) {
+            token = req.headers[this.headerTokenName];
+            idInToken = await this.getIdInToken(token);
+        }
+
+        if (!this.hasToken(req)) {
+            res.status(409).send("token pas fourni")
+        } else if (!(idInToken === req.params.id)) {
+            console.log(req);
+            console.log(idInToken);
+            console.log(req.params.id);
+            res.status(409).send("beurk le token")
+        } else {
+            next();
+        }
+    }
 
     loginResponse(res, reason, token, passwordIsValid) {
         let code = null,

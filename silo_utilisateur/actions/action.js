@@ -26,41 +26,41 @@ class Action {
         return pathName;
     }
     
-    // async read(req, res) {
-    //     let query = Object.keys(req.params).length != 0 ? req.params : req.query;
-    //     let result = null,
-    //         errorCaught = false,
-    //         errorName = null,
-    //         code = RESPONSES.HTTP_STATUS.OK;
+    async read(req, res) {
+        let query = Object.keys(req.params).length != 0 ? req.params : req.query;
+        let result = null,
+            errorCaught = false,
+            errorName = null,
+            code = 200;
 
-    //     query = this.model.createQuery(query);
+        query = this.model.createQuery(query);
 
-    //     try {
-    //         result = await this.model.read(query);
-    //     } catch (err) {
-    //         errorCaught = true;
-    //         errorName = err.errorMsg.name;
-    //     }
+        try {
+            result = await this.model.read(query);
+        } catch (err) {
+            errorCaught = true;
+            errorName = err.errorMsg.name;
+        }
 
-    //     if(!errorCaught) {
-    //         if (!result || result.length < 1) {
-    //             code = RESPONSES.HTTP_STATUS.NOT_FOUND;
-    //             result = this.unknowObjectError;
-    //         } else if(result.length == 1) {
-    //             result = this.cleanResult(result[0]);
-    //         } else {
-    //             result = this.cleanResult(result);
-    //         }
-    //     } else if(errorName === ERROR.MONGO.CAST) {
-    //         code = RESPONSES.HTTP_STATUS.NOT_FOUND;
-    //         result = this.unknowObjectError;
-    //     } else {
-    //         code = RESPONSES.HTTP_STATUS.INTERNAL_SERVER_ERROR;
-    //         result = RESPONSES.DATABASE_ERROR;
-    //     }
+        if(!errorCaught) {
+            if (!result || result.length < 1) {
+                code = 404;
+                result = this.unknowObjectError;
+            } else if(result.length == 1) {
+                result = this.cleanResult(result[0]);
+            } else {
+                result = this.cleanResult(result);
+            }
+        } else if(errorName === "CastError") {
+            code = 401;
+            result = this.unknowObjectError;
+        } else {
+            code = "Erreur interne au serveur";
+            result = 500;
+        }
 
-    //     this.sendAnswer(res, code, result);
-    // }
+        this.sendAnswer(res, code, result);
+    }
 
     // async update(req, res) {
     //     let readOneQuery = { _id: req.params.id },
@@ -104,36 +104,36 @@ class Action {
     //     this.sendAnswer(res, code, result);
     // }
 
-    // async delete(req, res) {
-    //     let query = { _id: req.params.id },
-    //         code = RESPONSES.HTTP_STATUS.OK,
-    //         result = null,
-    //         error = null,
-    //         errorCaught = false;
+    async delete(req, res) {
+        let query = { _id: req.params.id },
+            code = 200,
+            result = null,
+            error = null,
+            errorCaught = false;
 
-    //     try {
-    //         result = await this.model.delete(query);
-    //         this.deleteAllOccurencies(query);
-    //     } catch (err) {
-    //         errorCaught = true;
-    //         error = err.errMsg;
-    //     }
+        try {
+            result = await this.model.delete(query);
+            this.deleteAllOccurencies(query);
+        } catch (err) {
+            errorCaught = true;
+            error = err.errMsg;
+        }
         
-    //     if(errorCaught) {
-    //         if(error.name && error.name === ERROR.MONGO.CAST && error.path === "_id") {
-    //             code = RESPONSES.HTTP_STATUS.NOT_FOUND;
-    //             result = this.unknowObjectError;
-    //         } else {
-    //             code = RESPONSES.HTTP_STATUS.INTERNAL_SERVER_ERROR;
-    //             result = RESPONSES.DATABASE_ERROR
-    //         }
-    //     } else if(result.deleteCount < 1) {
-    //         code = RESPONSES.HTTP_STATUS.NOT_FOUND;
-    //         result = this.unknowObjectError;
-    //     }
+        if(errorCaught) {
+            if(error.name && error.name === "CastError" && error.path === "_id") {
+                code = 404;
+                result = this.unknowObjectError;
+            } else {
+                code = 500;
+                result = "Erreur interne de la BDD"
+            }
+        } else if(result.deleteCount < 1) {
+            code = 404;
+            result = this.unknowObjectError;
+        }
 
-    //     this.sendAnswer(res, code, result);
-    // }
+        this.sendAnswer(res, code, result);
+    }
 
     sendAnswer(res, code, message, missingField) {
         let result = message;

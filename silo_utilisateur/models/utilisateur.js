@@ -92,7 +92,51 @@ class Utilisateur {
       });
     });
   };
-  
+
+  createQuery(data) {
+    var newObject = this.sanitizeData(data);
+
+    if(!!data.id) {
+      newObject._id = data.id;
+      delete newObject.id;
+    }
+
+    delete newObject.id;
+    return newObject; 
+  };
+
+  async read(query) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+        self.DBModel.find(query,function(err, data) {
+            if(err) {
+                reject({"error" : true, "message" : "Error fetching data", "errorMsg" : err});  
+            } else {
+                resolve(data);
+            }
+        });
+    });
+  }
+
+  async delete(query, callback) {
+    let self = this;
+    let response;
+    return new Promise(function(resolve, reject) {
+        self.DBModel.find(query,function(err, dbModel) {
+            if(err) {
+                reject({"error" : true, "message" : "Error fetching data", "errMsg" : err});
+            } else {
+                self.DBModel.deleteMany(query, function(err, res){
+                    if(err) {
+                        reject({"error" : true, "message" : "Error deleting data", "errorMsg" : err});  
+                    } else {
+                        resolve(Object.assign(query,{"error" : false, "deleteCount": res.deletedCount, "message" : "Delete success."}));
+                    }
+                });
+            }
+        });
+    });
+  }
 };
 
 module.exports = Utilisateur;
