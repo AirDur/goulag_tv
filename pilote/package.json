@@ -1,0 +1,19 @@
+{
+  "name": "pfe-pilot",
+  "version": "1.0.0",
+  "description": "On pilote le projet final",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "run": "node server.js"
+  },
+  "author": "L'équipe de choc",
+  "license": "MIT",
+  "dependencies": {
+    "fast-gateway": "^1.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
