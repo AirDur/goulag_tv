@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Freelancer - Start Bootstrap Theme</title>
+  <title>Goulag TV</title>
 
   <!-- Custom fonts for this theme -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -26,6 +26,7 @@
   <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">Goulag TV</a>
+      <img class="navbar-brand js-scroll-trigger" href="#page-top" src="img/search_goulag.png" alt="">
       <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
@@ -33,13 +34,13 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Connection</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Mes Playlists</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">Mes Playlists</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">Mon Historique</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Mon Historique</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Connection</a>
           </li>
         </ul>
       </div>
@@ -51,8 +52,30 @@
     <div class="container d-flex align-items-center flex-column">
 
       <!-- Masthead Avatar Image -->
-      <img class="masthead-avatar mb-5" src="img/avataaars.svg" alt="">
+      <!--<img class="masthead-avatar mb-5" src="img/search_goulag.png" alt="">-->
 
+      <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+      <div id="player"></div>
+
+     
+
+
+      <form ng-submit="search()" id="search-form">
+        <div id="search-box">
+          <input id="searchtext" name="q" placeholder="What are you searching for ?" type="text" ng-model="searchtext">
+          <button id="search-button" type="submit"><span>Search</span></button>
+        </div>
+    
+        <div id="options_search">
+          <input type="checkbox" id="youtube" name="youtube"
+             value="youtube" checked ng-model="youtube"/>
+          <label for="youtube">YouTube</label>&emsp;&emsp;
+          <input type="checkbox" id="rutube" name="rutube"
+             value="rutube" checked ng-model="rutube"/>
+          <label for="rutube">rutube</label>
+        </div>
+      </form>
+    
       <!-- Masthead Heading -->
       <h1 class="masthead-heading text-uppercase mb-0">Goulag TV</h1>
 
@@ -66,7 +89,7 @@
       </div>
 
       <!-- Masthead Subheading -->
-      <p class="masthead-subheading font-weight-light mb-0">Recherche en cours</p>
+      <p class="masthead-subheading font-weight-light mb-0">Ce qui compte ce n'est pas le vote, c'est comment on compte les votes.</p>
 
     </div>
   </header>
@@ -569,6 +592,9 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/freelancer.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/flux_youtube.js"></script>
 
 </body>
 
