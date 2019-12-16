@@ -10,13 +10,13 @@ router.get("/", (req, res, next) => {
       .exec()
       .then(docs => {
         console.log(docs);
-        //   if (docs.length >= 0) {
+           if (docs.length >= 0) {
         res.status(200).json(docs);
-        //   } else {
-        //       res.status(404).json({
-        //           message: 'No entries found'
-        //       });
-        //   }
+           } else {
+               res.status(404).json({
+                   message: 'No entries found'
+               });
+           }
       })
       .catch(err => {
         console.log(err);
@@ -33,10 +33,7 @@ router.get("/", (req, res, next) => {
       user_id: req.body.user_id,
       historique: []
     });
-    console.log(req.body.title);
-    console.log(req.body.link);
     historique
-      .listVideo.push(new this.VideoModel())
       .save()
       .then(result => {
         console.log(result);
@@ -55,7 +52,7 @@ router.get("/", (req, res, next) => {
   });
   
   router.get("/:listVideoId", (req, res, next) => {
-    const id = req.params.listVideoId;
+    const id = mongoose.Types.ObjectId(req.params.listVideoId);
     ListVideo.findById(id)
       .exec()
       .then(doc => {
@@ -110,6 +107,19 @@ router.get("/", (req, res, next) => {
   });
   
   
+  router.post("/:listVideoId", (req, res, next) => {
+    var video = new Video({"_id": req.body.id_video, "title": req.body.title, "link":req.body.link, "date":req.body.date});
+    ListVideo.findByIdAndUpdate(req.params.listVideoId, {$push: {listVideo: video}})
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(function(error){
+      console.log(error)
+    });
+  }); 
   
+
+  
+
   module.exports = router;
   

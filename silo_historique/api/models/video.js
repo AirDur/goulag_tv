@@ -4,7 +4,7 @@ const videoSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     title: String,
     link: String,
-    date: Date
+    date: Date,
 });
 
 const listVideoSchema = mongoose.Schema({

@@ -5,8 +5,11 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const videoRoutes = require("./api/routes/videos");
+const listvideoRoutes = require("./api/routes/listvideos");
 
-mongoose.connect("mongodb+srv://teddy:arC6NcvgH9LdxeP@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+const db = require("./dataLayer");
+
+mongoose.connect("mongodb+srv://teddy:arC6NcvgH9LdxeP@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,6 +30,7 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use("/videos", videoRoutes);
+app.use("/listvideos", listvideoRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
