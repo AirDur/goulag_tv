@@ -18,13 +18,11 @@ router.get("/:filter", async (req, res) => {
           limit: 5,
           nextpageRef: filter3.ref,
         };
-        list = ytsr(null, options);
-  
+        list = await ytsr(null, options);
     } catch(error) {
         return Promise.reject(error);
     };
     res.send(list);
-
 });
 
 router.get("/video/:id", async (req, res) => {
@@ -37,7 +35,4 @@ router.get("/video/:id", async (req, res) => {
     });
 });
 
-
 module.exports = router;
-
-

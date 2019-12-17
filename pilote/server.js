@@ -29,6 +29,14 @@ gateway({
         secret: 'shhhhhhared-secret'
       })
     ]
+  }, {
+    prefix: '/recherche',
+    target: CONFIG.IP_RECHERCHE,
+    middlewares: [
+      // require('express-jwt')({
+      //   secret: 'shhhhhhared-secret'
+      // })
+    ]
   }]
 }).start(PORT).then(server => {
   console.log(`API Gateway listening on ${PORT} port!`)
