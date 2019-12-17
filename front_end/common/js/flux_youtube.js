@@ -40,3 +40,16 @@ function stopVideo() {
   player.stopVideo();
 }
 
+
+var search = require('youtube-search');
+ 
+var opts = {
+  maxResults: 10,
+  key: 'yourkey'
+};
+ 
+search('jsconf', opts, function(err, results) {
+  if(err) return console.log(err);
+ 
+  console.dir(results);
+});
