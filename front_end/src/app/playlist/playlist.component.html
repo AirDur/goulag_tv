@@ -1,1 +1,12 @@
-<p>playlist works!</p>
+<div style="padding: 13px;">
+    <mat-spinner *ngIf="products.length === 0"></mat-spinner>
+
+    <div *ngFor="let video of videos" class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ video.title }}</h5>
+          <p class="card-text">{{video.description}}</p>
+          <a href="#" class="btn btn-primary">Watch</a>
+        </div>
+    </div>
+</div>
