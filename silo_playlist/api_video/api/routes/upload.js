@@ -35,10 +35,8 @@ async function main() {
     // Upload data to the blob
     //const data = 'Hello, World!';
     //const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
-    const uploadBlobResponse = await blockBlobClient.uploadStream(data, data.length);
     const uploadBlobResponse = await blockBlobClient.uploadFile("/home/bertrandcanta/Documents/5A/gouvernance/goulag_tv/silo_playlist/api_video/videos/myvideo.mp4");
     console.log("Blob was uploaded successfully. requestId: ", uploadBlobResponse.requestId);
-    
 }
 
 router.get('/', (req, res, next) =>{
@@ -53,9 +51,6 @@ router.get('/', (req, res, next) =>{
 module.exports = router;
 
 /*
-CREDENTIALS
-
-export CONNECT_STR="DefaultEndpointsProtocol=https;AccountName=ourvideosstorage;AccountKey=XBF7yoVeDfILQimtz/4oM1cAR7P/1WIAaGuLBMxyzfXcdYeCoSEcJljYsfC4rcoQHDcxDox6+Q55FF6T6Mo4uA==;EndpointSuffix=core.windows.net"
 
 CONTAINER NAME
 ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d
