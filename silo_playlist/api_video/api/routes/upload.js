@@ -30,6 +30,7 @@ async function main() {
     // Get a block blob client
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
+    
     console.log('\nUploading to Azure storage as blob:\n\t', blobName);
 
     // Upload data to the blob
