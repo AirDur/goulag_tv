@@ -7,14 +7,36 @@ const youtubedl = require('youtube-dl');
 const CONNECT_STR = process.env.CONNECT_STR;
 const CONTAINER_NAME = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-async function main() {
-    console.log('Azure Blob storage v2 - JavaScript quickstart sample');
+async function check_if_exist(){
+    console.log("checking if exist...")
+
+    service=azure.createBlobService(CONNECT_STR);
+    for(i=0;i<15;i++){
+        service.doesBlobExist(CONTAINER_NAME,"tema.mp4",(error, response, errorOrResult)=>{
+            console.log("Bah jreflechis...")
+            if(!error){
+                if(response.exists == true){
+                    console.log(response.name+" : exist");
+                }
+                else{
+                    console.log(response.name+" : no exist");
+                }
+            }
+        });
+        await sleep(10000);   
+    }
+}
+
+function main() {
+    console.log('Uploading a video');
     // Quick start code goes here
-
+    
     var blobService = azure.createBlobService(CONNECT_STR);
-
-    const video = youtubedl('http://www.youtube.com/watch?v=90AiXO1pAiA',
+    const video = youtubedl('https://www.youtube.com/watch?v=ZvRnLhmiv0U',
         ['--format=18'],
         { cwd: __dirname });
 
@@ -26,22 +48,38 @@ async function main() {
         });
 
         
+
     var write_stream = blobService.createWriteStreamToBlockBlob(CONTAINER_NAME,
-        "essai_video_4.mp4",
-        { blockIdPrefix: 'block' },
+        "tema.mp4",
+        { blockIdPrefix: 'block', },
         (error, result, response) => {
             if (!error) {
               // file uploaded
               console.log("video uploaded !");
             }
+            if(error){
+                console.log("Write stream error");
+            }
         });
 
+    video.on('error', function error(err) {
+        console.log('Erreur upload video retrying...')
+        write_stream.end()
+        main()
+    });
+
+    write_stream.on('error', function error(err) {
+        //console.log('error write stream')
+    });
+    
     video.pipe(write_stream);
 }
 
 router.get('/', (req, res, next) =>{
 
-    main().then(() => console.log('Done')).catch((ex) => console.log(ex.message));
+    main()
+
+    check_if_exist();
 
     res.status(200).json({
         message : "upload fetched"
