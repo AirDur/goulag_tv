@@ -19,4 +19,9 @@ export class AppComponent {
   search(search : any) {
     this.router.navigate(['/research'], { queryParams : { query : search.form.value.search } });
   }
+
+  login(login : any) {
+    console.log(login.form.value);
+    //TODO
+  }
 }

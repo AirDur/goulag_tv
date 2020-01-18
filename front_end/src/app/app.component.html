@@ -41,7 +41,7 @@
             </li>
         </ul>
         <form #searchForm="ngForm" (ngSubmit)="search(searchForm)" class="form-inline">
-          <input ngModel name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <input [(ngModel)]="search.query" name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
         </form>
         <ul class="navbar-nav mr-sm2">
@@ -70,20 +70,19 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
           <div class="form-group">
             <label for="recipient-mail" class="col-form-label">Mail:</label>
-            <input type="text" class="form-control" id="recipient-mail">
+            <input [(ngModel)]="login.mail" name="mail" type="text" class="form-control" id="recipient-mail">
           </div>
           <div class="form-group">
             <label for="recipient-password" class="col-form-label">Password:</label>
-            <input type="password" class="form-control" id="recipient-password">
+            <input [(ngModel)]="login.password" name="password" type="password" class="form-control" id="recipient-password">
           </div>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Login</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Login</button>
       </div>
     </div>
   </div>

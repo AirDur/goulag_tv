@@ -12,7 +12,7 @@ export class PlaylistComponent implements OnInit {
   constructor(private apiService: ApiService) { }
   
 	ngOnInit() {
-		this.apiService.sendGetRequest().subscribe((data: any[])=>{  
+		this.apiService.getPlaylist().subscribe((data: any[])=>{  
 			this.videos = data;  
 		})  
   }

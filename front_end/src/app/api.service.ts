@@ -34,4 +34,8 @@ export class ApiService {
   public getResearchResult(arg0: string) {
     return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/' + arg0).pipe(catchError(this.handleError));
   }
+
+  public getPlaylist(){
+    return this.httpClient.get(this.SERVER_URL + '/playlist/playlist').pipe(catchError(this.handleError));
+  }
 }
