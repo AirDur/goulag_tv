@@ -10,7 +10,11 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'goulagtv';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+  }
 
   search(search : any) {
     this.router.navigate(['/research'], { queryParams : { query : search.form.value.search } });
