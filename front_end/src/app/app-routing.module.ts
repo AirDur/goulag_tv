@@ -6,7 +6,6 @@ import {
 
 import { HomeComponent } from './home/home.component';
 import { HistoriqueComponent } from './historique/historique.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { ResearchComponent } from './research/research.component';

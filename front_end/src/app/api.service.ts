@@ -10,7 +10,7 @@ import { retry, catchError } from 'rxjs/operators';
 })
 
 export class ApiService {
-  private SERVER_URL = "http://localhost:3000";
+  private SERVER_URL = "http://localhost:8080";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -32,6 +32,6 @@ export class ApiService {
   }
 
   public getResearchResult(arg0: string) {
-    return this.httpClient.get(this.SERVER_URL + '/research/research/' + arg0).pipe(catchError(this.handleError));
+    return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/' + arg0).pipe(catchError(this.handleError));
   }
 }

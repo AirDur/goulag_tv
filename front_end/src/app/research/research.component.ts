@@ -13,9 +13,8 @@ export class ResearchComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
-	this.apiService.getResearchResult("tomato").subscribe((data : any[])=>{
-		console.log(data);
-		this.results = data;
+	  this.apiService.getResearchResult("tomato").subscribe((data : any[])=>{
+		  this.results = data;
     })
   }
 
