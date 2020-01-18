@@ -1,21 +1,20 @@
 {
-  "name": "api_video",
+  "name": "goulagtv",
   "version": "1.0.0",
   "description": "coucou",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "sh start.sh"
   },
   "author": "Thomas",
   "license": "ISC",
   "dependencies": {
+    "azure-storage": "^2.10.3",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
-    "youtube-dl": "^2.1.0",
-    "@azure/storage-blob": "^12.0.0",
-    "@types/dotenv": "^4.0.3",
-    "dotenv": "^6.0.0"
+    "nodemon": "^2.0.2",
+    "youtube-dl": "^2.1.0"
   }
 }

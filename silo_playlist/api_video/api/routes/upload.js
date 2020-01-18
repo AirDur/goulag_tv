@@ -2,47 +2,86 @@ const express = require('express');
 var fs = require('fs');
 const router = express.Router();
 
-const { BlobServiceClient } = require('@azure/storage-blob');
-const uuidv1 = require('uuid/v1');
+var azure = require('azure-storage');
+const youtubedl = require('youtube-dl');
 const CONNECT_STR = process.env.CONNECT_STR;
+const CONTAINER_NAME = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
 
+/* function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-async function main() {
-    console.log('Azure Blob storage v12 - JavaScript quickstart sample');
+async function check_if_exist(){
+    console.log("checking if exist...")
+
+    service=azure.createBlobService(CONNECT_STR);
+    for(i=0;i<15;i++){
+        service.doesBlobExist(CONTAINER_NAME,"tema.mp4",(error, response, errorOrResult)=>{
+            console.log("Bah jreflechis...")
+            if(!error){
+                if(response.exists == true){
+                    console.log(response.name+" : exist");
+                }
+                else{
+                    console.log(response.name+" : no exist");
+                }
+            }
+        });
+        await sleep(10000);   
+    }
+} */
+
+function main(link,name) {
+    console.log('Uploading a video');
     // Quick start code goes here
-
-    // Create the BlobServiceClient object which will be used to create a container client
-    const blobServiceClient = await BlobServiceClient.fromConnectionString(CONNECT_STR);
-
-    // Create a unique name for the container
-    const containerName = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
-
-    // Get a reference to a container
-    const containerClient = await blobServiceClient.getContainerClient(containerName);
-    console.log("Got the container");
-    // Create the container
-    //const createContainerResponse = await containerClient.create();
-    //console.log("Container was created successfully. requestId: ", createContainerResponse.requestId);
-
-    // Create a unique name for the blob
-    const blobName = 'video' + uuidv1() + '.mp4';
-
-    // Get a block blob client
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
     
-    console.log('\nUploading to Azure storage as blob:\n\t', blobName);
+    var blobService = azure.createBlobService(CONNECT_STR);
+    const video = youtubedl(link,
+        ['--format=18'],
+        { cwd: __dirname });
 
-    // Upload data to the blob
-    //const data = 'Hello, World!';
-    //const uploadBlobResponse = await blockBlobClient.upload(data, data.length);
-    const uploadBlobResponse = await blockBlobClient.uploadFile("/home/bertrandcanta/Documents/5A/gouvernance/goulag_tv/silo_playlist/api_video/videos/myvideo.mp4");
-    console.log("Blob was uploaded successfully. requestId: ", uploadBlobResponse.requestId);
+    // Will be called when the download starts.
+    video.on('info', function(info) {
+        console.log('Download started')
+        console.log('filename: ' + info._filename)
+        console.log('size: ' + info.size)
+        });
+
+        
+
+    var write_stream = blobService.createWriteStreamToBlockBlob(CONTAINER_NAME,
+        name,
+        { blockIdPrefix: 'block', },
+        (error, result, response) => {
+            if (!error) {
+              // file uploaded
+              console.log("video uploaded !");
+            }
+            if(error){
+                console.log("Write stream error");
+            }
+        });
+
+    video.on('error', function error(err) {
+        console.log('Erreur upload video retrying...')
+        write_stream.end()
+        main()
+    });
+
+    write_stream.on('error', function error(err) {
+        //console.log('error write stream')
+    });
+    
+    video.pipe(write_stream);
 }
 
-router.get('/', (req, res, next) =>{
+router.post('/', (req, res, next) =>{
 
-    main().then(() => console.log('Done')).catch((ex) => console.log(ex.message));
+    const link = req.body.lien;
+    const name = req.body.nom+".mp4";
+    main(link,name);
+
+    /* check_if_exist(); */
 
     res.status(200).json({
         message : "upload fetched"
