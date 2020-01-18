@@ -45,6 +45,13 @@ do
         then
             cd $chemin_playlist
             nodemon start & 
+        elif [ ${silo} == "silo_utilisateur" ]
+        then 
+            cd $chemin
+            cd keys
+            openssl ecparam -genkey -name prime256v1 -noout -out jwt_priv.pem
+            openssl ec -in jwt_priv.pem -pubout -out jwt_pub.pem
+            npm run start & 
         else
             cd $chemin
             nodemon start & 

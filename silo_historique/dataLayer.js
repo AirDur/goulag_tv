@@ -4,7 +4,7 @@ let dataLayer = {
 
     init : (collection, schema) => {
         const someModelSchema = new mongoose.Schema(schema);
-        const mongo_ip = "mongodb+srv://teddy:arC6NcvgH9LdxeP@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority";
+        const mongo_ip = "mongodb+srv://teddy:GOULAGTV@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority";
 
         mongoose.connect(mongo_ip, { useNewUrlParser: true, useUnifiedTopology: true });
 
