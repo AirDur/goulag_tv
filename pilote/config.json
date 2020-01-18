@@ -1,5 +1,6 @@
 {
-    "IP_UTILISATEUR" : "http://public.myapp:300",
-    "IP_HISTORIQUE" : "http://public.myapp:300",
-    "IP_PLAYLIST" : "http://public.myapp:300"
+    "IP_UTILISATEUR" : "http://localhost:3004",
+    "IP_HISTORIQUE" : "http://localhost:3001",
+    "IP_PLAYLIST" : "http://localhost:3002",
+    "IP_RECHERCHE" : "http://localhost:3003"
 }

@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CookieService } from 'ngx-cookie-service';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HomeComponent } from './home/home.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { PlaylistComponent } from './playlist/playlist.component';
@@ -16,16 +15,17 @@ import { MatToolbarModule,
   MatButtonModule,
   MatProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ResearchComponent } from './research/research.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
     HomeComponent,
     ViewerComponent,
     PlaylistComponent,
-    HistoriqueComponent
+    HistoriqueComponent,
+    ResearchComponent
   ],
   imports: [
     BrowserModule,
@@ -41,4 +41,5 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers: [CookieService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
