@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-research',
@@ -9,11 +11,16 @@ import { ApiService } from '../api.service';
 export class ResearchComponent implements OnInit {
 
   results: any[] = [];
+  order: any;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-	  this.apiService.getResearchResult("tomato").subscribe((data : any[])=>{
+    this.route.queryParamMap.subscribe(params => {
+      this.order = {...params.keys, ...params};
+    });
+
+	  this.apiService.getResearchResult(this.order.params.query).subscribe((data : any[])=>{
 		  this.results = data;
     })
   }

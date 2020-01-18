@@ -16,6 +16,7 @@ import { MatToolbarModule,
   MatProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResearchComponent } from './research/research.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ResearchComponent } from './research/research.component';
     MatButtonModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

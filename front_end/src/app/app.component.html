@@ -14,9 +14,9 @@
               <a class="nav-link" [routerLink]="'/playlist'">Playlist</a>
             </li>
           </ul>
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [routerLink]="'/research'">Search</button>
+          <form #searchForm="ngForm" (ngSubmit)="search(searchForm)" class="form-inline">
+            <input ngModel name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
           </form>
           <ul class="navbar-nav mr-sm2">
             <li class="nav-item">
@@ -40,9 +40,9 @@
             <a class="nav-link" [routerLink]="'/playlist'">Playlist</a>
             </li>
         </ul>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [routerLink]="'/research'">Search</button>
+        <form #searchForm="ngForm" (ngSubmit)="search(searchForm)" class="form-inline">
+          <input ngModel name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Search</button>
         </form>
         <ul class="navbar-nav mr-sm2">
             <li class="nav-item">
