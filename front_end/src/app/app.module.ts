@@ -17,6 +17,7 @@ import { MatToolbarModule,
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResearchComponent } from './research/research.component';
 import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     ViewerComponent,
     PlaylistComponent,
     HistoriqueComponent,
-    ResearchComponent
+    ResearchComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,7 @@ import { HistoriqueComponent } from './historique/historique.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { ResearchComponent } from './research/research.component';
-
+import { RegisterComponent } from './register/register.component';
 
 // MODIFY HERE TO ADD COMPONENT ETC...
 // ,pathMatch: 'prefix'
@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'playlist', component: PlaylistComponent },
   { path: 'historique', component: HistoriqueComponent, canActivate: [AuthGuard]},
   { path: 'research', component: ResearchComponent },
+  { path: 'register', component: RegisterComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full'},
 ];
 
