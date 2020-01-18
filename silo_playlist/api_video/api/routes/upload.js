@@ -7,7 +7,7 @@ const youtubedl = require('youtube-dl');
 const CONNECT_STR = process.env.CONNECT_STR;
 const CONTAINER_NAME = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
 
-function sleep(ms) {
+/* function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
@@ -29,14 +29,14 @@ async function check_if_exist(){
         });
         await sleep(10000);   
     }
-}
+} */
 
-function main() {
+function main(link,name) {
     console.log('Uploading a video');
     // Quick start code goes here
     
     var blobService = azure.createBlobService(CONNECT_STR);
-    const video = youtubedl('https://www.youtube.com/watch?v=ZvRnLhmiv0U',
+    const video = youtubedl(link,
         ['--format=18'],
         { cwd: __dirname });
 
@@ -50,7 +50,7 @@ function main() {
         
 
     var write_stream = blobService.createWriteStreamToBlockBlob(CONTAINER_NAME,
-        "tema.mp4",
+        name,
         { blockIdPrefix: 'block', },
         (error, result, response) => {
             if (!error) {
@@ -75,11 +75,13 @@ function main() {
     video.pipe(write_stream);
 }
 
-router.get('/', (req, res, next) =>{
+router.post('/', (req, res, next) =>{
 
-    main()
+    const link = req.body.lien;
+    const name = req.body.nom+".mp4";
+    main(link,name);
 
-    check_if_exist();
+    /* check_if_exist(); */
 
     res.status(200).json({
         message : "upload fetched"
