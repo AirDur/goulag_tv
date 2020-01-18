@@ -1,11 +1,11 @@
 {
-  "name": "api_video",
+  "name": "goulagtv",
   "version": "1.0.0",
   "description": "coucou",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "sh start.sh"
   },
   "author": "Thomas",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
     "youtube-dl": "^2.1.0"
   }
 }
