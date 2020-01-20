@@ -35,8 +35,16 @@ export class ApiService {
     return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/' + arg0).pipe(catchError(this.handleError));
   }
 
+  public getYoutubeVideoLink(arg0: string) {
+    return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/video/' + arg0).pipe(catchError(this.handleError));
+  }
+
   public getPlaylist(){
     return this.httpClient.get(this.SERVER_URL + '/playlist/playlist').pipe(catchError(this.handleError));
+  }
+
+  public checkexistazurestorage(video_id){
+    return this.httpClient.post(this.SERVER_URL + '/playlist/storage/checkexist',video_id).pipe(catchError(this.handleError));
   }
 
   public login(value: any) {

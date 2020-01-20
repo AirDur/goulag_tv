@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const downloadRoutes = require("./api/routes/download");
-const uploadRoutes = require("./api/routes/upload");
+const storageRoutes = require("./api/routes/storage");
 const bodyParser = require("body-parser");
 
 //morgan sert a avoir des logs dans le terminal
@@ -27,7 +27,7 @@ app.use( (req, res, next) => {
 
 
 app.use('/download', downloadRoutes);
-app.use('/upload', uploadRoutes);
+app.use('/storage', storageRoutes);
 
 //Prendre en charge les erreurs de requetes
 app.use( (req,res,next) => {

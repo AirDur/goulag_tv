@@ -31,7 +31,10 @@ router.get("/video/:id", async (req, res) => {
     ytdl.getInfo(id ,(err,info)=>{
       var format = ytdl.chooseFormat(info.formats, { quality: '18' })["url"];
       console.log(format);
-      res.send(format);
+      var obj_json_format = {
+        ytlink : format
+      }
+      res.send(obj_json_format);
     });
 });
 

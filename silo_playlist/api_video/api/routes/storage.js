@@ -6,6 +6,8 @@ var azure = require('azure-storage');
 const youtubedl = require('youtube-dl');
 const CONNECT_STR = process.env.CONNECT_STR;
 const CONTAINER_NAME = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
+const blobService = azure.createBlobService(CONNECT_STR);
+const link_storage = "https://ourvideosstorage.blob.core.windows.net/ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d/"
 
 /* function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -35,7 +37,6 @@ function main(link,name) {
     console.log('Uploading a video');
     // Quick start code goes here
     
-    var blobService = azure.createBlobService(CONNECT_STR);
     const video = youtubedl(link,
         ['--format=18'],
         { cwd: __dirname });
@@ -75,7 +76,7 @@ function main(link,name) {
     video.pipe(write_stream);
 }
 
-router.post('/', (req, res, next) =>{
+router.post('/upload', (req, res, next) =>{
 
     const link = req.body.lien;
     const name = req.body.nom+".mp4";
@@ -86,6 +87,34 @@ router.post('/', (req, res, next) =>{
     res.status(200).json({
         message : "upload fetched"
     });
+});
+
+router.post('/checkexist', (req, res, next) =>{
+
+    const name = req.body.id_v+".mp4";
+    var res_link = "";
+    var res_message = "";
+
+    blobService.doesBlobExist(CONTAINER_NAME, name, (error, response, errorOrResult)=>{
+        if(!error){
+            if(response.exists == true){
+                console.log(response.name+" : exist");
+                res_message = "Video found";
+                res_link=link_storage+name;
+            }
+            else{
+                console.log(response.name+" : no exist");
+                res_message = "Video not found";
+                res_link="Null";
+            }
+            res.status(200).json({
+                message : res_message,
+                link : res_link
+            });
+        }
+    });
+
+    /* check_if_exist(); */
 });
 
 module.exports = router;
