@@ -74,6 +74,7 @@ class Utilisateur {
             } else {
                 data =  !!data ? data._doc : data;
                 resolve(Object.assign({}, data));
+                console.log(data);
             }
         });
     });

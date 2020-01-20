@@ -22,7 +22,6 @@ export class ResearchComponent implements OnInit {
 
 	  this.apiService.getResearchResult(this.order.params.query).subscribe((data : any[])=>{
       this.results = data;
-      console.log(this.results);
     })
   }
 

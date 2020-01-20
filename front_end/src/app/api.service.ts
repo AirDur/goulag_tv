@@ -38,4 +38,12 @@ export class ApiService {
   public getPlaylist(){
     return this.httpClient.get(this.SERVER_URL + '/playlist/playlist').pipe(catchError(this.handleError));
   }
+
+  public login(value: any) {
+    return this.httpClient.post(this.SERVER_URL + '/utilisateur/api/login', value).pipe(catchError((error) => { return throwError(error) }));
+  }
+
+  public register(value: any) {
+    return this.httpClient.post(this.SERVER_URL + '/utilisateur/api/', value).pipe(catchError((error) => { return throwError(error) }));
+  }
 }

@@ -220,10 +220,10 @@ class Utilisateurs extends Action {
         } catch(err) {
             code = 500;
             result = "Erreur de base de donnée";
-            
+            console.log(err);
             if(err.errorMsg && err.errorMsg.name && 
-            (err.errorMsg.name === "ValidationError") ||
-            (err.errorMsg.name === "MissingPassword") ) {
+            ((err.errorMsg.name === "ValidationError") ||
+            (err.errorMsg.name === "MissingPassword")) ) {
                 code = 400;
                 result = "Erreur de la part de l'utilisateur";
                 missingField = this.getMissingFieldName(err.errorMsg.errors);
