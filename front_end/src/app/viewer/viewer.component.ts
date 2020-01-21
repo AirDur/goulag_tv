@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -11,23 +12,34 @@ export class ViewerComponent implements OnInit {
 
   public show:boolean = false;
   title = 'goulagtv';
+  query_url;
+  video_id;
   video_title="";
   video_description="";
   video_author="";
   video_views="";
   video_link="";
 
-  constructor(private router: Router, private apiservice: ApiService) { }
+  constructor(private router: Router, private apiservice: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.route.queryParamMap.subscribe(params => {
+      this.query_url = {...params.keys, ...params};
+    });
+
+    this.video_id = this.query_url.params.query;
+
+    console.log("dans le viewer video id : "+this.video_id);
+
     var obj_json = {
-      id_v: "ououzos"
+      id_v: this.video_id
     }
 
     this.apiservice.checkexistazurestorage(obj_json).subscribe((data : any)=>{
       console.log("Check azure : data = "+data.link);
       if(data.link == "Null"){
-        this.apiservice.getYoutubeVideoLink("CS7SEhBQjTQ").subscribe((data: any)=>{
+        this.apiservice.getYoutubeVideoLink(this.video_id).subscribe((data: any)=>{
           console.log("YT data = "+ JSON.stringify(data));
           this.video_link = data.ytlink;
           this.show=true;
@@ -38,7 +50,7 @@ export class ViewerComponent implements OnInit {
         this.show=true;
       }
 
-      this.apiservice.getVideoInfos("CS7SEhBQjTQ").subscribe((data : any)=>{
+      this.apiservice.getVideoInfos(this.video_id).subscribe((data : any)=>{
         console.log("recu : "+ JSON.stringify(data));
         this.video_title=data.title;
         this.video_description=data.description;
