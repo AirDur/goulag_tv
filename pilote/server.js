@@ -25,9 +25,9 @@ gateway({
     prefix: '/historique',
     target: CONFIG.IP_HISTORIQUE,
     middlewares: [
-      require('express-jwt')({
-        secret: 'shhhhhhared-secret'
-      })
+      //require('express-jwt')({
+       // secret: 'shhhhhhared-secret'
+      //})
     ]
   }, {
     prefix: '/recherche',
