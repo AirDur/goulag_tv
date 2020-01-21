@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const downloadRoutes = require("./api/routes/download");
 const storageRoutes = require("./api/routes/storage");
-
+const mongoose = require("mongoose");
 const videoRoutes = require("./api/routes/videos");
 const playlistRoutes = require("./api/routes/playlists");
 

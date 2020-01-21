@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Video = require("../models/video").VideoModel;
-const Playlist = require("../models/playlist").PlaylistModel;
+const Playlist = require("../models/video").PlaylistModel;
 
 // router.get("/download", (req, res, next) => {
 //   // const video = new Video({

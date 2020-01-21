@@ -7,6 +7,13 @@ const videoSchema = mongoose.Schema({
     date: Date,
 });
 
+const playlistSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    user_id: mongoose.Schema.Types.ObjectId,
+    playlist: [videoSchema]
+});
+
+module.exports.PlaylistModel = mongoose.model('Playlist', playlistSchema);
 
 module.exports.VideoModel = mongoose.model('Video', videoSchema);
 
