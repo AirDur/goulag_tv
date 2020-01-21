@@ -11,6 +11,10 @@ export class ViewerComponent implements OnInit {
 
   public show:boolean = false;
   title = 'goulagtv';
+  video_title="";
+  video_description="";
+  video_author="";
+  video_views="";
   video_link="";
 
   constructor(private router: Router, private apiservice: ApiService) { }
@@ -33,8 +37,14 @@ export class ViewerComponent implements OnInit {
         this.video_link=data.link;
         this.show=true;
       }
+
+      this.apiservice.getVideoInfos("CS7SEhBQjTQ").subscribe((data : any)=>{
+        console.log("recu : "+ JSON.stringify(data));
+        this.video_title=data.title;
+        this.video_description=data.description;
+        this.video_author=data.author;
+        this.video_views=data.view_count;
+      });
     }); 
-
   }
-
 }

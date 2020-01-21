@@ -35,6 +35,10 @@ export class ApiService {
     return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/' + arg0).pipe(catchError(this.handleError));
   }
 
+  public getVideoInfos(arg0: string) {
+    return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/video/getinfos/' + arg0).pipe(catchError(this.handleError));
+  }
+
   public getYoutubeVideoLink(arg0: string) {
     return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/video/' + arg0).pipe(catchError(this.handleError));
   }

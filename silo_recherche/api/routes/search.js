@@ -28,6 +28,7 @@ router.get("/:filter", async (req, res) => {
 router.get("/video/:id", async (req, res) => {
     var id;
     id = req.params.id;
+
     ytdl.getInfo(id ,(err,info)=>{
       var format = ytdl.chooseFormat(info.formats, { quality: '18' })["url"];
       console.log(format);
@@ -36,6 +37,21 @@ router.get("/video/:id", async (req, res) => {
       }
       res.send(obj_json_format);
     });
+});
+
+router.get("/video/getinfos/:id", (req,res)=>{
+  var id;
+  id = req.params.id;
+
+  ytdl.getBasicInfo(id, (err,info)=>{
+    var obj_json_infos_video = {
+      title : info.title,
+      author : info.author.name,
+      description : info.description,
+      view_count : info.player_response.videoDetails.viewCount
+    }
+    res.send(obj_json_infos_video);
+  });
 });
 
 module.exports = router;
