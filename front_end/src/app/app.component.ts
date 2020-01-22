@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -8,16 +9,27 @@ import { ApiService } from './api.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-  title = 'goulagtv';
-  apiservice: ApiService;
-  errorLogin = false;
+export class AppComponent implements OnInit{
+  @ViewChild('closeModal', {static: true}) closeModal;
 
-  constructor(private router: Router, private as: ApiService) {
+  title: String = 'goulagtv';
+  apiservice: ApiService;
+  errorLogin: Boolean = false;
+  isConnected: Boolean = false;
+  private cookieValue: string;
+
+  constructor(private router: Router, private as: ApiService, private cookieService: CookieService) {
     this.apiservice = as;
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
+  }
+
+  ngOnInit() {
+    let value = this.cookieService.get("token");
+    if(value !== "") {
+      this.isConnected = true;
+    }
   }
 
   search(search : any) {
@@ -25,17 +37,24 @@ export class AppComponent {
   }
 
   login(login : any) {
-    console.log(login.form.value);
-    //TODO
+    this.errorLogin = false;
+
     this.apiservice.login(login.form.value).subscribe(
       (data : any[]) => {
-        console.log(login);
+        this.cookieService.set("token", data["token"]);
+        this.isConnected = true;
+        this.router.navigate(["/"]);
+        this.closeModal.nativeElement.click() //<-- here
       },
       (error) => {
         this.errorLogin = true;
-
       }
     )
   }
 
+  logOff() {
+    this.cookieService.delete("token");
+    this.isConnected = false;
+    this.router.navigate(["/"]);
+  }
 }

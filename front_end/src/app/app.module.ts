@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResearchComponent } from './research/research.component';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
+import { RegisteredComponent } from './registered/registered.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { RegisterComponent } from './register/register.component';
     PlaylistComponent,
     HistoriqueComponent,
     ResearchComponent,
-    RegisterComponent
+    RegisterComponent,
+    RegisteredComponent
   ],
   imports: [
     BrowserModule,

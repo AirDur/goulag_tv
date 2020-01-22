@@ -23,17 +23,15 @@ class Utilisateurs extends Action {
     };
     
     cleanResult(res) {
-        var result = res.toObject();
-        delete result['password'];
+        delete res['password'];
 
-        return result;    
+        return res;    
     }
 
     async login(req, res) {
         let user, reason, passwordIsValid, token;
-
         try {
-            user = await this.model.readOne({ email: req.body.email });
+            user = await this.model.readOne({ email: req.body.mail });
             if (!!user) {
                 try {
                     passwordIsValid = await this.comparePasswords(req.body.password, user.password);
@@ -129,6 +127,7 @@ class Utilisateurs extends Action {
 
         if (!this.hasToken(req)) {
             res.status(409).send("token pas fourni")
+            
         } else if (!isValid) {
             res.status(409).send("beurk le token")
         } else {
@@ -148,9 +147,6 @@ class Utilisateurs extends Action {
         if (!this.hasToken(req)) {
             res.status(409).send("token pas fourni")
         } else if (!(idInToken === req.params.id)) {
-            console.log(req);
-            console.log(idInToken);
-            console.log(req.params.id);
             res.status(409).send("beurk le token")
         } else {
             next();
@@ -220,16 +216,27 @@ class Utilisateurs extends Action {
         } catch(err) {
             code = 500;
             result = "Erreur de base de donnée";
-            console.log(err);
-            if(err.errorMsg && err.errorMsg.name && 
-            ((err.errorMsg.name === "ValidationError") ||
-            (err.errorMsg.name === "MissingPassword")) ) {
-                code = 400;
-                result = "Erreur de la part de l'utilisateur";
-                missingField = this.getMissingFieldName(err.errorMsg.errors);
-                answerSent = true;
-
-                this.sendAnswer(res, code, result, missingField);
+            if(err.errorMsg && err.errorMsg.name) {
+                if((err.errorMsg.name === "ValidationError")) {
+                    code = 400;
+                    result = "Champ Manquant";
+                    missingField = this.getMissingFieldName(err.errorMsg.errors);
+                    answerSent = true;
+    
+                    this.sendAnswer(res, code, result, missingField);
+                } else if (err.errorMsg.name === "Mot de passe manquant") {
+                    code = 400;
+                    result = "Champ Manquant";
+                    answerSent = true;
+    
+                    this.sendAnswer(res, code, result, "password");
+                } else if(err.errorMsg.name === "MongoError") {
+                    code = 400;
+                    result = err.errorMsg.errmsg;
+                    answerSent = true;
+    
+                    this.sendAnswer(res, code, result);
+                }
             }
         }
         
@@ -237,7 +244,6 @@ class Utilisateurs extends Action {
             this.sendAnswer(res, code, result);
         }
     }
-    
 };
 
 module.exports = Utilisateurs;
