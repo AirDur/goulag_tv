@@ -31,6 +31,7 @@ router.get("/", (req, res, next) => {
     const playlist = new Playlist({
       _id: new mongoose.Types.ObjectId(),
       user_id: req.body.user_id,
+      name: req.body.name,
       playlist: []
     });
     playlist
@@ -118,7 +119,6 @@ router.get("/", (req, res, next) => {
     });
   }); 
   
-
   
 
   module.exports = router;
