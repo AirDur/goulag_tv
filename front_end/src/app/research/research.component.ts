@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +14,15 @@ export class ResearchComponent implements OnInit {
   results: any[] = [];
   order: any;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private apiService: ApiService, private route: ActivatedRoute) { }
+
+  view_video(video_link) {
+    
+    console.log("j ai en parametre : "+video_link);
+    var id_video = video_link.match(/\?v=(.*)/)[1];  //RegExp pour recuperer le id_video
+    console.log("substring : "+id_video);
+    this.router.navigate(['/viewer'], { queryParams : { query : id_video } });
+  }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {

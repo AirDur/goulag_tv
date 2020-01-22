@@ -9,7 +9,7 @@ const listvideoRoutes = require("./api/routes/listvideos");
 
 const db = require("./dataLayer");
 
-mongoose.connect("mongodb+srv://teddy:arC6NcvgH9LdxeP@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
+mongoose.connect("mongodb+srv://teddy:GOULAGTV@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -17,17 +17,17 @@ gateway({
     prefix: '/playlist',
     target: CONFIG.IP_PLAYLIST,
     middlewares: [
-      require('express-jwt')({
-        secret: 'shhhhhhared-secret'
-      })
+      //require('express-jwt')({
+       // secret: 'shhhhhhared-secret'
+      //})
     ]
   }, {
     prefix: '/historique',
     target: CONFIG.IP_HISTORIQUE,
     middlewares: [
-      require('express-jwt')({
-        secret: 'shhhhhhared-secret'
-      })
+      //require('express-jwt')({
+       // secret: 'shhhhhhared-secret'
+      //})
     ]
   }, {
     prefix: '/recherche',

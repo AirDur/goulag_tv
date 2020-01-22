@@ -3,16 +3,18 @@
   <section class="jumbotron">
     <div class="container ">
         <div class="text-center">
-            <video id="videoPlayer" controls>  
-                <source src="https://ourvideosstorage.blob.core.windows.net/ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d/poopidpie.mp4" type="video/mp4">
-            </video>
+            <ng-container *ngIf="show">
+              <video id="videoPlayer" controls>  
+                  <source src="{{video_link}}" type="video/mp4">
+              </video>
+            </ng-container>
         </div>
         <div class="mt-3">
-                <h2>Titre de la video</h2>
-                <p>Nb vues</p>
+                <h2>{{video_title}}</h2>
+                <p>{{video_author}}</p>
+                <p>{{video_views}} Vues</p>
         </div>
-        <p class="lead text-muted ">Something short and leading 
-                  about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+        <p class="lead text-muted ">{{video_description}}</p>
     </div>
   </section>
   

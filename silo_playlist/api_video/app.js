@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const downloadRoutes = require("./api/routes/download");
-const uploadRoutes = require("./api/routes/upload");
+const storageRoutes = require("./api/routes/storage");
+const mongoose = require("mongoose");
+const videoRoutes = require("./api/routes/videos");
+const playlistRoutes = require("./api/routes/playlists");
+
 const bodyParser = require("body-parser");
 
 //morgan sert a avoir des logs dans le terminal
@@ -11,6 +15,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+mongoose.connect("mongodb+srv://teddy:GOULAGTV@cluster0-2heou.mongodb.net/goulagtv?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
 //Anticiper les erreurs de CORS
 app.use( (req, res, next) => {
@@ -27,7 +32,11 @@ app.use( (req, res, next) => {
 
 
 app.use('/download', downloadRoutes);
-app.use('/upload', uploadRoutes);
+app.use('/storage', storageRoutes);
+
+// Routes which should handle requests
+app.use("/videos", videoRoutes);
+app.use("/playlists", playlistRoutes);
 
 //Prendre en charge les erreurs de requetes
 app.use( (req,res,next) => {
