@@ -1,5 +1,8 @@
 <div class="container">
     <h2 class="mb-2">Register</h2>
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ errorText }}
+    </div>
     <form #newAccount="ngForm" (ngSubmit)="registerNewAccount(newAccount)" class="needs-validation" novalidate="">
       <div class="row">
         <div class="col-md-6 mb-3">

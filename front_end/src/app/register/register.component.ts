@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -8,23 +9,32 @@ import { ApiService } from '../api.service';
 })
 export class RegisterComponent implements OnInit {
   apiservice: ApiService;
+  error: Boolean = false;
+  errorText: String = "";
 
-  constructor(private as: ApiService) {
+  constructor(private router: Router, private as: ApiService) {
     this.apiservice = as;
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   ngOnInit() {
   }
 
-  registerNewAccount(newAccount: any) {
-    console.log(newAccount.form.value);
-    
+  registerNewAccount(newAccount: any) {    
+    this.error = false;
     this.apiservice.register(newAccount.form.value).subscribe(
       (data : any[]) => {
-        console.log(newAccount);
+        this.router.navigate(['/registered']);
       },
       (error) => {
-        console.log(error);
+        this.error = true;
+        if(error.error.res && error.error.res === "Champ Manquant") {
+          this.errorText = error.error.res + " : " + error.error.missing;
+        } else {
+          this.errorText = error.error;
+        }
       }
     )
   }

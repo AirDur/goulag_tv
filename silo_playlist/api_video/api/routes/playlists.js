@@ -31,6 +31,7 @@ router.get("/", (req, res, next) => {
     const playlist = new Playlist({
       _id: new mongoose.Types.ObjectId(),
       user_id: req.body.user_id,
+      name: req.body.name,
       playlist: []
     });
     playlist
@@ -72,7 +73,7 @@ router.get("/", (req, res, next) => {
   });
   
   router.patch("/:playlistId", (req, res, next) => {
-    const id = req.params.playlistId;
+    const id = mongoose.Types.ObjectId(req.params.playlistId);
     const updateOps = {};
     for (const ops of req.body) {
       updateOps[ops.propName] = ops.value;
@@ -92,11 +93,12 @@ router.get("/", (req, res, next) => {
   });
   
   router.delete("/:playlistId", (req, res, next) => {
-    const id = req.params.playlistId;
+    const id = mongoose.Types.ObjectId(req.params.playlistId);
     Playlist.remove({ _id: id })
       .exec()
       .then(result => {
         res.status(200).json(result);
+        console.log("suppression");
       })
       .catch(err => {
         console.log(err);
@@ -118,7 +120,6 @@ router.get("/", (req, res, next) => {
     });
   }); 
   
-
   
 
   module.exports = router;

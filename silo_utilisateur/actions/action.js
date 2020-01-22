@@ -136,10 +136,15 @@ class Action {
     }
 
     sendAnswer(res, code, message, missingField) {
-        let result = message;
+        let result;
 
         if(missingField) {
-            result.missingField = missingField;
+            result = {
+                res : message,
+                missing : missingField
+            }
+        } else {
+            result = message;
         }
 
         res.status(code).send(result);
