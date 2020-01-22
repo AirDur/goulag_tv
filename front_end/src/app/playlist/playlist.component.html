@@ -2,11 +2,19 @@
     <mat-spinner *ngIf="videos.length === 0"></mat-spinner>
 
     <div *ngFor="let video of videos" class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+      <ng-container *ngIf="show">
+        <img [src]="video.thumbnail" class="card-img-top" role="img" />
         <div class="card-body">
-          <h5 class="card-title">{{ video.title }}</h5>
-          <p class="card-text">{{video.description}}</p>
-          <a href="#" class="btn btn-primary">Watch</a>
+          <h5 class="card-title">{{video.title}}</h5>
+          <p class="card-text">{{videos.author}}</p>
+
+
+          <form #searchForm="ngForm" (ngSubmit)="view_video(video.id)" class="form-inline">
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" type="submit">Watch</button>
+            </div>
+          </form>
         </div>
+      </ng-container>
     </div>
 </div>

@@ -48,7 +48,8 @@ router.get("/video/getinfos/:id", (req,res)=>{
       title : info.title,
       author : info.author.name,
       description : info.description,
-      view_count : info.player_response.videoDetails.viewCount
+      view_count : info.player_response.videoDetails.viewCount,
+      thumbnail : info.player_response.videoDetails.thumbnail.thumbnails[2].url
     }
     res.send(obj_json_infos_video);
   });
