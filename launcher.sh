@@ -19,14 +19,17 @@ do
         if [[ ${silo} == "silo_playlist" ]]
         then
             cd $chemin_playlist
-            npm install 
+            npm install --save
         else
             cd $chemin
-            npm install 
+            npm install --save
         fi
         cd ${repertory}
     fi
 done
+
+cd ${repertory}/pilote
+npm install --save
 
 
 echo -e "\033[1;31mLANCEMENT DES APPS\033[0m"
@@ -43,19 +46,38 @@ do
         
         if [[ ${silo} == "silo_playlist" ]]
         then
+            WID=`xdotool search --title "Mozilla Firefox" | head -1`
+            xdotool windowfocus $WID
+            xdotool key ctrl+T
             cd $chemin_playlist
             nodemon start & 
         elif [ ${silo} == "silo_utilisateur" ]
         then 
+            WID=`xdotool search --title "Mozilla Firefox" | head -1`
+            xdotool windowfocus $WID
+            xdotool key ctrl+T
             cd $chemin
             cd keys
             openssl ecparam -genkey -name prime256v1 -noout -out jwt_priv.pem
             openssl ec -in jwt_priv.pem -pubout -out jwt_pub.pem
             npm run start & 
         else
+            WID=`xdotool search --title "Mozilla Firefox" | head -1`
+            xdotool windowfocus $WID
+            xdotool key ctrl+T
+
             cd $chemin
             nodemon start & 
         fi
         cd ${repertory}
     fi
+
 done
+WID=`xdotool search --title "Mozilla Firefox" | head -1`
+xdotool windowfocus $WID
+#Lancement Frontend et pilote 
+xdotool key ctrl+T
+# get focus on active terminal tab
+
+cd ${repertory}/front_end
+npm start &
