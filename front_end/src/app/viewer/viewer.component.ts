@@ -20,6 +20,25 @@ export class ViewerComponent implements OnInit {
   video_views="";
   video_link="";
 
+
+  addToPlaylist(){
+
+    console.log("ajout de la video dans la playlist du bdd utilisateur");
+    
+    /* Fonction de Teddy BDD */
+
+    //Upload de la video dans Azure
+    var video_json = {
+      lien : "https://www.youtube.com/watch?v="+this.video_id,
+      nom :  this.video_id
+    }
+
+    this.apiservice.uploadVideoToAzureStorage(video_json).subscribe( (data : any[])=> {
+      console.log("reponse ulpoad : "+JSON.stringify(data));
+    });
+
+  }
+
   constructor(private router: Router, private apiservice: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {

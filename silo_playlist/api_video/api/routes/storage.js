@@ -33,10 +33,10 @@ async function check_if_exist(){
     }
 } */
 
-function main(link,name) {
+function uploadVideo(link,name) {
     console.log('Uploading a video');
-    // Quick start code goes here
-    
+    console.log("link : "+link+"\nname : "+name);
+
     const video = youtubedl(link,
         ['--format=18'],
         { cwd: __dirname });
@@ -64,9 +64,9 @@ function main(link,name) {
         });
 
     video.on('error', function error(err) {
-        console.log('Erreur upload video retrying...')
+        console.log('Erreur during download : '+err);
         write_stream.end()
-        main()
+        uploadVideo(link,name)
     });
 
     write_stream.on('error', function error(err) {
@@ -78,14 +78,26 @@ function main(link,name) {
 
 router.post('/upload', (req, res, next) =>{
 
+    console.log("body : "+ JSON.stringify(req.body));
     const link = req.body.lien;
     const name = req.body.nom+".mp4";
-    main(link,name);
 
-    /* check_if_exist(); */
-
-    res.status(200).json({
-        message : "upload fetched"
+    blobService.doesBlobExist(CONTAINER_NAME, name, (error, response, errorOrResult)=>{
+        if(!error){
+            if(response.exists == true){
+                console.log(response.name+" : Already exist");
+                res_message = response.name+" : Already exist";
+            }
+            else{
+                console.log(response.name+" : Doesnt exist Uploading ...");
+                res_message = response.name+" : Doesnt exist Uploading ...";
+               /*  console.log("DANS DOESBLOBEXIST link : "+link+"\nname : "+name); */
+                uploadVideo(link,name);
+            }
+            res.status(200).json({
+                message : res_message
+            });
+        }
     });
 });
 

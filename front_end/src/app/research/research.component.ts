@@ -16,11 +16,24 @@ export class ResearchComponent implements OnInit {
 
   constructor(private router: Router, private apiService: ApiService, private route: ActivatedRoute) { }
 
-  view_video(video_link) {
-    
-    console.log("j ai en parametre : "+video_link);
+  addToPlaylist(video_link){
+
+    console.log("ajout de la video dans la playlist du bdd utilisateur");
+
+    /* Fonction de Teddy BDD */
+
+    //Upload de la video dans Azure
+    var video_json = {
+      lien : video_link,
+      nom :  video_link.match(/\?v=(.*)/)[1] //RegExp pour recuperer le id_video
+    }
+    this.apiService.uploadVideoToAzureStorage(video_json).subscribe( (data : any[])=> {
+      console.log("reponse ulpoad : "+JSON.stringify(data));
+    });
+  }
+
+  view_video(video_link) {  
     var id_video = video_link.match(/\?v=(.*)/)[1];  //RegExp pour recuperer le id_video
-    console.log("substring : "+id_video);
     this.router.navigate(['/viewer'], { queryParams : { query : id_video } });
   }
 

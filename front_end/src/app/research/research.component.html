@@ -17,6 +17,12 @@
                 </div>
               </form>
 
+              <form #searchForm="ngForm" (ngSubmit)="addToPlaylist(video.link)" class="form-inline">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-primary" type="submit">Add to Playlist</button>
+                </div>
+              </form>
+
 
               <small class="text-muted">{{ video.duration }}</small>
             </div>

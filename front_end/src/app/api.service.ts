@@ -51,6 +51,10 @@ export class ApiService {
     return this.httpClient.post(this.SERVER_URL + '/playlist/storage/checkexist',video_id).pipe(catchError(this.handleError));
   }
 
+  public uploadVideoToAzureStorage(video_json){
+    return this.httpClient.post(this.SERVER_URL + '/playlist/storage/upload',video_json).pipe(catchError(this.handleError));
+  }
+
   public login(value: any) {
     return this.httpClient.post(this.SERVER_URL + '/utilisateur/api/login', value).pipe(catchError((error) => { return throwError(error) }));
   }

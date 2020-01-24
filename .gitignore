@@ -64,3 +64,6 @@ typings/
 
 # keys
 *.pem
+
+#package lock json
+package-lock.json
