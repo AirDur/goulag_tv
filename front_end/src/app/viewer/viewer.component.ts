@@ -28,7 +28,7 @@ export class ViewerComponent implements OnInit {
     
     var video = {
       title: this.video_title,
-      link: this.video_id,
+      link: "https://www.youtube.com/watch?v="+this.video_id,
       date: Date,
     }
 

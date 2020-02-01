@@ -13,6 +13,16 @@ export class ResearchComponent implements OnInit {
 
   results: any[] = [];
   order: any;
+  video_id;
+  video_title="";
+  video_description="";
+  video_author="";
+  video_views="";
+  video_link="";
+  
+  user_id="";
+  playlist_nom:"";
+
 
   constructor(private router: Router, private apiService: ApiService, private route: ActivatedRoute) { }
 
@@ -21,6 +31,22 @@ export class ResearchComponent implements OnInit {
     console.log("ajout de la video dans la playlist du bdd utilisateur");
 
     /* Fonction de Teddy BDD */
+    var video = {
+      title: this.video_title,
+      link: "https://www.youtube.com/watch?v="+this.video_id,
+      date: Date,
+    }
+
+    var playlist = {
+      user_id: this.user_id,
+      name :  this.playlist_nom,
+      playlist: [video]
+    }
+
+    
+    this.apiService.addToPlaylist(playlist).subscribe( (data : any[])=> {
+      console.log("reponse playlist : "+JSON.stringify(data));
+    });
 
     //Upload de la video dans Azure
     var video_json = {
@@ -45,6 +71,16 @@ export class ResearchComponent implements OnInit {
 	  this.apiService.getResearchResult(this.order.params.query).subscribe((data : any[])=>{
       this.results = data;
     })
+
+    this.apiService.getVideoInfos(this.video_link).subscribe((data : any)=>{
+      console.log("recu : "+ JSON.stringify(data));
+      this.video_id = this.video_link.match(/\?v=(.*)/)[1];
+      this.video_title=data.title;
+      this.video_description=data.description;
+      this.video_author=data.author;
+      this.video_views=data.view_count;
+    });
+
   }
 
 }
