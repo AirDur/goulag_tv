@@ -19,13 +19,29 @@ export class ViewerComponent implements OnInit {
   video_author="";
   video_views="";
   video_link="";
-
+  user_id="";
+  playlist_nom:"";
 
   addToPlaylist(){
 
     console.log("ajout de la video dans la playlist du bdd utilisateur");
     
+    var video = {
+      title: this.video_title,
+      link: this.video_id,
+      date: Date,
+    }
+
+    var playlist = {
+      user_id: this.user_id,
+      name :  this.playlist_nom,
+      playlist: [video]
+    }
+
     /* Fonction de Teddy BDD */
+    this.apiservice.addToPlaylist(playlist).subscribe( (data : any[])=> {
+      console.log("reponse playlist : "+JSON.stringify(data));
+    });
 
     //Upload de la video dans Azure
     var video_json = {

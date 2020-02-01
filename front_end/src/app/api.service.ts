@@ -62,4 +62,8 @@ export class ApiService {
   public register(value: any) {
     return this.httpClient.post(this.SERVER_URL + '/utilisateur/api/', value).pipe(catchError((error) => { return throwError(error) }));
   }
+
+  public addToPlaylist(value: any) {
+    return this.httpClient.post(this.SERVER_URL + '/playlist/', value).pipe(catchError((error) => { return throwError(error) }));
+  }
 }
