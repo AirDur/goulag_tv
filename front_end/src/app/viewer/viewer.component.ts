@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-viewer',
@@ -19,13 +20,15 @@ export class ViewerComponent implements OnInit {
   video_author="";
   video_views="";
   video_link="";
-  user_id="";
+  user_id=""
   playlist_nom:"";
+  
+  constructor(private router: Router, private apiservice: ApiService,
+              private cookieService: CookieService, private route: ActivatedRoute) { 
+      this.user_id = this.cookieService.get("id");
+  }
 
-  addToPlaylist(){
-
-    console.log("ajout de la video dans la playlist du bdd utilisateur");
-    
+  addToPlaylist(){    
     var video = {
       title: this.video_title,
       link: "https://www.youtube.com/watch?v="+this.video_id,
@@ -34,7 +37,7 @@ export class ViewerComponent implements OnInit {
 
     var playlist = {
       user_id: this.user_id,
-      name :  this.playlist_nom,
+      name : this.playlist_nom,
       playlist: [video]
     }
 
@@ -54,8 +57,6 @@ export class ViewerComponent implements OnInit {
     });
 
   }
-
-  constructor(private router: Router, private apiservice: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
 

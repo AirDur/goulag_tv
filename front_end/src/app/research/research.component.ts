@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-research',
@@ -22,11 +22,26 @@ export class ResearchComponent implements OnInit {
   
   user_id="";
   playlist_nom:"";
+  show_addToPlaylist: Boolean = true;
 
+  public alert:Boolean = false;
+  alertText: String;
+  public added:Boolean = false;
+  addedText: String;
 
-  constructor(private router: Router, private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private apiService: ApiService,
+    private cookieService: CookieService, private route: ActivatedRoute) { 
+      if(this.cookieService.check("id")) {
 
-  addToPlaylist(video_link){
+        this.user_id = this.cookieService.get("id");
+      } else {
+        this.show_addToPlaylist = false;
+      }
+  }
+
+  addToPlaylist(video_link) {
+
+    this.alert = false; this.added = false;
 
     console.log("ajout de la video dans la playlist du bdd utilisateur");
 
@@ -43,7 +58,6 @@ export class ResearchComponent implements OnInit {
       playlist: [video]
     }
 
-    
     this.apiService.addToPlaylist(playlist).subscribe( (data : any[])=> {
       console.log("reponse playlist : "+JSON.stringify(data));
     });
@@ -71,16 +85,6 @@ export class ResearchComponent implements OnInit {
 	  this.apiService.getResearchResult(this.order.params.query).subscribe((data : any[])=>{
       this.results = data;
     })
-
-    this.apiService.getVideoInfos(this.video_link).subscribe((data : any)=>{
-      console.log("recu : "+ JSON.stringify(data));
-      this.video_id = this.video_link.match(/\?v=(.*)/)[1];
-      this.video_title=data.title;
-      this.video_description=data.description;
-      this.video_author=data.author;
-      this.video_views=data.view_count;
-    });
-
   }
 
 }

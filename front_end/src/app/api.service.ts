@@ -44,7 +44,7 @@ export class ApiService {
   }
 
   public getPlaylist(){
-    return this.httpClient.get(this.SERVER_URL + '/playlist/playlist').pipe(catchError(this.handleError));
+    return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/').pipe(catchError(this.handleError));
   }
 
   public checkexistazurestorage(video_id){
@@ -64,6 +64,6 @@ export class ApiService {
   }
 
   public addToPlaylist(value: any) {
-    return this.httpClient.post(this.SERVER_URL + '/playlist/', value).pipe(catchError((error) => { return throwError(error) }));
+    return this.httpClient.post(this.SERVER_URL + '/playlist/playlists/', value).pipe(catchError((error) => { return throwError(error) }));
   }
 }

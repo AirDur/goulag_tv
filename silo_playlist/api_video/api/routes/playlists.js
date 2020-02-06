@@ -9,7 +9,6 @@ router.get("/", (req, res, next) => {
     Playlist.find()
       .exec()
       .then(docs => {
-        console.log(docs);
            if (docs.length >= 0) {
         res.status(200).json(docs);
            } else {

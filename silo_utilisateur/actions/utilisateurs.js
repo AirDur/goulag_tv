@@ -46,7 +46,7 @@ class Utilisateurs extends Action {
             reason = err;
         }
 
-        this.loginResponse(res, reason, token, passwordIsValid);
+        this.loginResponse(res, reason, token, user._id, passwordIsValid);
     }
 
     async comparePasswords(password, stockedPassword) {
@@ -153,7 +153,7 @@ class Utilisateurs extends Action {
         }
     }
 
-    loginResponse(res, reason, token, passwordIsValid) {
+    loginResponse(res, reason, token, id, passwordIsValid) {
         let code = null,
             result = null;
 
@@ -165,7 +165,7 @@ class Utilisateurs extends Action {
             result = "Problèmes";
         } else if(!!token) {
             code = 200;
-            result = { token: token };
+            result = { token: token, id: id };
         }
 
         this.sendAnswer(res, code, result);

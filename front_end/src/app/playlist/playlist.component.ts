@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-playlist',
@@ -13,22 +14,24 @@ export class PlaylistComponent implements OnInit {
   chaine;
   public show:boolean = false;
 
-
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private cookieService: CookieService) { }
   
   view_video(id_video) {
-    
-    console.log("j ai en parametre : "+id_video);
     this.router.navigate(['/viewer'], { queryParams : { query : id_video } });
   }
 
 	ngOnInit() {
-    var data = {
+    let value_id = this.cookieService.get("id");
+    let data = {
       id_playlist : "1234",
-      id_user : "5678",
+      id_user : value_id,
       nom : "jeudi mdr",
       list : ["kutk2XHEZNU","n-gsDYUXWqU"]
     }
+
+    // this.apiService.getPlaylist(value_id).subscribe( (data: any) => {
+    //   console.log(data);
+    // })
 
     data.list.forEach( (listItem, index)=>{
       this.apiService.getVideoInfos(listItem).subscribe((data : any)=>{

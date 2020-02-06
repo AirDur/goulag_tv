@@ -1,4 +1,12 @@
 <div class="album py-5 bg-light">
+
+  <div *ngIf="alert" class="alert alert-warning" role="alert">
+    {{ alertText }}
+  </div>
+  <div *ngIf="added" class="alert alert-sucess" role="alert">
+    {{ addedText }}
+  </div>
+  
   <div class="container">
     <div class="row">
       <div class="col-md-4" *ngFor="let video of results.items">
@@ -17,7 +25,7 @@
                 </div>
               </form>
 
-              <form #searchForm="ngForm" (ngSubmit)="addToPlaylist(video.link)" class="form-inline">
+              <form #searchForm="ngForm" *ngIf="show_addToPlaylist" (ngSubmit)="addToPlaylist(video.link)" class="form-inline">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-primary" type="submit">Add to Playlist</button>
                 </div>

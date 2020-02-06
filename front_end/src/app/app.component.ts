@@ -16,7 +16,6 @@ export class AppComponent implements OnInit{
   apiservice: ApiService;
   errorLogin: Boolean = false;
   isConnected: Boolean = false;
-  private cookieValue: string;
 
   constructor(private router: Router, private as: ApiService, private cookieService: CookieService) {
     this.apiservice = as;
@@ -41,6 +40,7 @@ export class AppComponent implements OnInit{
 
     this.apiservice.login(login.form.value).subscribe(
       (data : any[]) => {
+        this.cookieService.set("id", data["id"]);
         this.cookieService.set("token", data["token"]);
         this.isConnected = true;
         this.router.navigate(["/"]);
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit{
 
   logOff() {
     this.cookieService.delete("token");
+    this.cookieService.delete("id");
     this.isConnected = false;
     this.router.navigate(["/"]);
   }
