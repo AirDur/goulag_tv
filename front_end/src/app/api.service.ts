@@ -43,9 +43,7 @@ export class ApiService {
     return this.httpClient.get(this.SERVER_URL + '/recherche/recherche/video/' + arg0).pipe(catchError(this.handleError));
   }
 
-  public getPlaylist(){
-    return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/').pipe(catchError(this.handleError));
-  }
+  
 
   public checkexistazurestorage(video_id){
     return this.httpClient.post(this.SERVER_URL + '/playlist/storage/checkexist',video_id).pipe(catchError(this.handleError));
@@ -63,7 +61,29 @@ export class ApiService {
     return this.httpClient.post(this.SERVER_URL + '/utilisateur/api/', value).pipe(catchError((error) => { return throwError(error) }));
   }
 
-  public addToPlaylist(value: any) {
-    return this.httpClient.post(this.SERVER_URL + '/playlist/playlists/', value).pipe(catchError((error) => { return throwError(error) }));
+  // Les fonctions je n'arrive pas à les tester, elles fonctionnent avec postman
+  public getPlaylist(playlist_id){
+    return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/'+ playlist_id).pipe(catchError(this.handleError));
   }
+
+  // permet de récupérer l'id de la playlist avec l'id de l'utilisateur et le nom de la playlist
+  public getByUserIdAndName(user_id,name){
+    return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/getByUserIdAndName/' + user_id + '/' + name).pipe(catchError(this.handleError));
+  }
+
+  public addToPlaylist(id_playlist,value: any) {
+    return this.httpClient.post(this.SERVER_URL + '/playlist/playlists/addVideoToPlaylist/'+id_playlist, value).pipe(catchError((error) => { return throwError(error) }));
+  }
+
+  public createPlaylist(value: any,name) {
+    return this.httpClient.post(this.SERVER_URL + '/playlist/playlists/createPlaylist/'+name, value).pipe(catchError((error) => { return throwError(error) }));
+  }
+
+  public deletePlaylist(playlist_id) {
+    return this.httpClient.delete(this.SERVER_URL + '/playlist/playlists/'+ playlist_id).pipe(catchError((error) => { return throwError(error) }));
+  }
+
+
+
+
 }

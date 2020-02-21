@@ -5,6 +5,7 @@ const Video = require("../models/video").VideoModel;
 const playlistSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     user_id: mongoose.Schema.Types.ObjectId,
+    name: String,
     playlist: [Video]
 });
 

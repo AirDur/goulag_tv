@@ -24,33 +24,32 @@ router.get("/", (req, res, next) => {
         });
       });
   });
-  
-  router.post("/", (req, res, next) => {
-    console.log("Je suis bien dans le post hihi");
-    const playlist = new Playlist({
-      _id: new mongoose.Types.ObjectId(),
-      user_id: req.body.user_id,
-      name: req.body.name,
-      playlist: []
-    });
-    playlist
-      .save()
-      .then(result => {
-        console.log(result);
-        res.status(201).json({
-          message: "Handling POST requests to /videos",
-          createdVideo: result
-        });
+
+  router.get("/getByUserIdAndName/:userId/:name", (req, res) => {
+    
+    const id = mongoose.Types.ObjectId(req.params.userId);
+    console.log(id);
+    console.log(req.params.name);
+    Playlist.findOne({user_id:id, name:req.params.name})
+      .exec()
+      .then(doc => {
+        console.log("From database", doc._id);
+        if (doc) {
+          res.status(200).json(doc._id);
+        } else {
+          res
+            .status(404)
+            .json({ message: "No valid entry found for provided ID" });
+        }
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({
-          error: err
-        });
+        res.status(500).json({ error: err });
       });
-    console.log("pas post");
   });
-  
+
+
+
   router.get("/:playlistId", (req, res, next) => {
     const id = mongoose.Types.ObjectId(req.params.playlistId);
     Playlist.findById(id)
@@ -71,6 +70,59 @@ router.get("/", (req, res, next) => {
       });
   });
   
+  
+  router.post("/createPlaylist/:name", (req, res, next) => {
+
+    var video = new Video({
+      "_id": req.body.id_video,  
+      "title": req.body.title, 
+      "link":req.body.link, 
+      "date":Date
+    });
+    var video = new Video({"_id": req.body.id_video,  "title": req.body.title, "link":req.body.link, "date":req.body.date});
+    
+    const playlist = new Playlist({
+      _id: new mongoose.Types.ObjectId(),
+      user_id: req.body.user_id,
+      name: req.params.name,
+      playlist: [video]
+    });
+    
+    playlist
+      .save()
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "Handling POST requests to /videos",
+          createdVideo: result
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+    console.log("pas post");
+    if(req.body.id_video){
+
+    }
+
+  });
+
+  router.post("/addVideoToPlaylist/:playlistId", (req, res, next) => {
+    var video = new Video({"_id": req.body.id_video,  "title": req.body.title, "link":req.body.link, "date":req.body.date});
+    Playlist.findByIdAndUpdate(req.params.playlistId, {$push: {playlist: video}})
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(function(error){
+      console.log(error)
+    });
+  }); 
+  
+  
+ 
   router.patch("/:playlistId", (req, res, next) => {
     const id = mongoose.Types.ObjectId(req.params.playlistId);
     const updateOps = {};
@@ -91,7 +143,7 @@ router.get("/", (req, res, next) => {
       });
   });
   
-  router.delete("/:playlistId", (req, res, next) => {
+  router.delete("/delete/:playlistId", (req, res, next) => {
     const id = mongoose.Types.ObjectId(req.params.playlistId);
     Playlist.remove({ _id: id })
       .exec()
@@ -108,16 +160,7 @@ router.get("/", (req, res, next) => {
   });
   
   
-  router.post("/:playlistId", (req, res, next) => {
-    var video = new Video({"_id": req.body.id_video, "title": req.body.title, "link":req.body.link, "date":req.body.date});
-    Playlist.findByIdAndUpdate(req.params.playlistId, {$push: {playlist: video}})
-    .then(result => {
-      res.status(200).json(result)
-    })
-    .catch(function(error){
-      console.log(error)
-    });
-  }); 
+  
   
   
 

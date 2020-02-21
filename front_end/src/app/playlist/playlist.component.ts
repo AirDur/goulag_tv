@@ -11,7 +11,20 @@ import { CookieService } from 'ngx-cookie-service';
 export class PlaylistComponent implements OnInit {
 
   videos: any[] = [];
+  playlist: any[] = [];
+  results: any[] = [];
+  order: any;
+  video_id;
+  video_title="";
+  video_description="";
+  video_author="";
+  video_views="";
+  video_link="";
+  user_id="";
+  playlist_nom:"";
+  show_addToPlaylist: Boolean = true;
   chaine;
+
   public show:boolean = false;
 
   constructor(private apiService: ApiService, private router: Router, private cookieService: CookieService) { }
@@ -25,13 +38,17 @@ export class PlaylistComponent implements OnInit {
     let data = {
       id_playlist : "1234",
       id_user : value_id,
-      nom : "jeudi mdr",
+      name : "jeudi mdr",
       list : ["kutk2XHEZNU","n-gsDYUXWqU"]
     }
+
 
     // this.apiService.getPlaylist(value_id).subscribe( (data: any) => {
     //   console.log(data);
     // })
+    
+    
+
 
     data.list.forEach( (listItem, index)=>{
       this.apiService.getVideoInfos(listItem).subscribe((data : any)=>{

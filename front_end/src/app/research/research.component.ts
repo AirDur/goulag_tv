@@ -21,9 +21,10 @@ export class ResearchComponent implements OnInit {
   video_link="";
   
   user_id="";
+  playlist_id="";
   playlist_nom:"";
   show_addToPlaylist: Boolean = true;
-
+  videoRecup
   public alert:Boolean = false;
   alertText: String;
   public added:Boolean = false;
@@ -39,7 +40,29 @@ export class ResearchComponent implements OnInit {
       }
   }
 
-  addToPlaylist(video_link) {
+  addToNewPlaylist(video_link, name_playlist) {
+    // Récupération des informations de la vidéo
+    this.apiService.getVideoInfos(video_link).subscribe( (data : any[])=> {
+      console.log("reponse video infos : "+JSON.stringify(data));
+      this.videoRecup=JSON.stringify(data);
+      this.video_title=this.videoRecup.title;
+      this.video_link="https://www.youtube.com/watch?v="+this.videoRecup.link;
+
+    });
+
+    var infos = {
+      name: name_playlist,
+      user_id: this.user_id,
+      title: this.video_title,
+      link: this.video_link,
+    };
+
+    this.apiService.createPlaylist(infos,name_playlist).subscribe( (data : any[])=> {
+      console.log("reponse video infos : "+JSON.stringify(data));
+    });
+  }
+
+  addToPlaylist(video_link, name_playlist) {
 
     this.alert = false; this.added = false;
 
@@ -48,19 +71,31 @@ export class ResearchComponent implements OnInit {
     /* Fonction de Teddy BDD */
     var video = {
       title: this.video_title,
-      link: "https://www.youtube.com/watch?v="+this.video_id,
+      link: this.video_id,
       date: Date,
     }
 
-    var playlist = {
-      user_id: this.user_id,
-      name :  this.playlist_nom,
-      playlist: [video]
-    }
-
-    this.apiService.addToPlaylist(playlist).subscribe( (data : any[])=> {
-      console.log("reponse playlist : "+JSON.stringify(data));
+    // Récupération des informations de la vidéo
+    this.apiService.getVideoInfos(video_link).subscribe( (data : any[])=> {
+      console.log("reponse video infos : "+JSON.stringify(data));
+      this.videoRecup=JSON.stringify(data);
+      video.title=this.videoRecup.title;
+      video.link="https://www.youtube.com/watch?v="+this.videoRecup.link;
     });
+
+    
+    // Récupération de la playlist avec son nom et l'user id
+    this.apiService.getByUserIdAndName(this.user_id,name_playlist).subscribe( (data : any[])=> {
+      console.log("reponse id playlist : "+JSON.stringify(data));
+      this.playlist_id=JSON.stringify(data);
+    });
+
+    // ajout de la video
+    this.apiService.addToPlaylist(this.playlist_id,video).subscribe( (data : any[])=> {
+      console.log("reponse ajout : "+JSON.stringify(data));
+    });
+
+
 
     //Upload de la video dans Azure
     var video_json = {
