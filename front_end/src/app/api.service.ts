@@ -65,6 +65,10 @@ export class ApiService {
   public getPlaylist(playlist_id){
     return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/'+ playlist_id).pipe(catchError(this.handleError));
   }
+  // Récupère le nom des playlists d'un user
+  public getPlaylistsNameForAnUser(user_id){
+    return this.httpClient.get(this.SERVER_URL + '/playlist/playlists/getPlaylistsNameByUserId/'+ user_id).pipe(catchError(this.handleError));
+  }
 
   // permet de récupérer l'id de la playlist avec l'id de l'utilisateur et le nom de la playlist
   public getByUserIdAndName(user_id,name){

@@ -25,6 +25,30 @@ router.get("/", (req, res, next) => {
       });
   });
 
+  router.get("/getPlaylistsNameByUserId/:userId", (req, res) => {
+    
+    const id = mongoose.Types.ObjectId(req.params.userId);
+    console.log(id);
+    console.log(req.params.name);
+    Playlist.findOne({user_id:id})
+      .exec()
+      .then(doc => {
+        console.log("From database", doc.name);
+        if (doc) {
+          res.status(200).json(doc.name);
+        } else {
+          res
+            .status(404)
+            .json({ message: "No valid entry found for provided ID" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+  });
+
+
   router.get("/getByUserIdAndName/:userId/:name", (req, res) => {
     
     const id = mongoose.Types.ObjectId(req.params.userId);
