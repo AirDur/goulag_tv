@@ -5,33 +5,6 @@ const mongoose = require("mongoose");
 const Video = require("../models/video").VideoModel;
 const Playlist = require("../models/video").PlaylistModel;
 
-// router.get("/download", (req, res, next) => {
-//   // const video = new Video({
-//   //   _id: new mongoose.Types.ObjectId(),
-//   //   title: req.body.title,
-//   //   link: req.body.link
-//   // });
-
-//   const fs = require('fs')
-//   const youtubedl = require('youtube-dl')
-//   //const video = youtubedl(link)
-//   const video = youtubedl('http://www.youtube.com/watch?v=90AiXO1pAiA',
-//     // Optional arguments passed to youtube-dl.
-//     ['--format=18'],
-//     // Additional options can be given for calling `child_process.execFile()`.
-//     { cwd: __dirname })
-//     console.log(__dirname)
-//   // Will be called when the download starts.
-//   video.on('info', function(info) {
-//     console.log('Download started')
-//     console.log('filename: ' + info._filename)
-//     console.log('size: ' + info.size)
-//   })
- 
-//   video.pipe(fs.createWriteStream(__dirname+'/../../historiqueVideo/myvideo.mp4'))
-// });
-
-
 
 
 router.get("/", (req, res, next) => {
@@ -56,7 +29,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  console.log("Je suis bien dans le post hihi");
   const video = new Video({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,

@@ -9,29 +9,6 @@ const CONTAINER_NAME = "ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d";
 const blobService = azure.createBlobService(CONNECT_STR);
 const link_storage = "https://ourvideosstorage.blob.core.windows.net/ourcontainerb0cde5e0-20b3-11ea-88c6-854bdc9fed6d/"
 
-/* function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-async function check_if_exist(){
-    console.log("checking if exist...")
-
-    service=azure.createBlobService(CONNECT_STR);
-    for(i=0;i<15;i++){
-        service.doesBlobExist(CONTAINER_NAME,"tema.mp4",(error, response, errorOrResult)=>{
-            console.log("Bah jreflechis...")
-            if(!error){
-                if(response.exists == true){
-                    console.log(response.name+" : exist");
-                }
-                else{
-                    console.log(response.name+" : no exist");
-                }
-            }
-        });
-        await sleep(10000);   
-    }
-} */
 
 function uploadVideo(link,name) {
     console.log('Uploading a video');
@@ -91,7 +68,6 @@ router.post('/upload', (req, res, next) =>{
             else{
                 console.log(response.name+" : Doesnt exist Uploading ...");
                 res_message = response.name+" : Doesnt exist Uploading ...";
-               /*  console.log("DANS DOESBLOBEXIST link : "+link+"\nname : "+name); */
                 uploadVideo(link,name);
             }
             res.status(200).json({
@@ -126,7 +102,6 @@ router.post('/checkexist', (req, res, next) =>{
         }
     });
 
-    /* check_if_exist(); */
 });
 
 module.exports = router;
